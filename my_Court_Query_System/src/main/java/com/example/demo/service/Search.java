@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Court;
 import com.example.demo.entity.Form;
+import com.example.demo.entity.User;
+import com.example.demo.entity.UserForm;
 import com.example.demo.mapper.CourtSearch;
+import com.example.demo.mapper.UserSearch;
 
 @Service
 public class Search {
 	@Autowired
     private CourtSearch courtsearch;
+	@Autowired
+	private UserSearch usersearch;
 
 //	根据前端页面用户选择的日期，判断当天是本周的第几天
 	public List<Court> search_Court(Form form) {
@@ -70,7 +75,7 @@ public class Search {
 	    	Court court1 = courtlist.get(i);
 	    	Court court_search = courtsearch.Search_court_name(court1);
 //	    	System.out.println(court_search);
-	    	court1.setName(court_search.getName());
+	    	court1.setCourt_name(court_search.getCourt_name());
 	    	court1.setDizhi(court_search.getDizhi());
 	    	court1.setJuli(court_search.getJuli());
 	    	System.out.println(courtlist);
@@ -78,68 +83,21 @@ public class Search {
 		return courtlist;
 	}
 
-//	public String Search_basketball_court(String kyori) {
-//		return basketball_court_search.SearchJyuusyo(kyori);
-//	}
-//
-//	public List<Court> Search_court(Time time) {
-//		Date date = time.getYearmonthday();
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.setFirstDayOfWeek(Calendar.MONDAY);
-//		calendar.setTime(date);
-//
-////		本月的第几周
-//		Integer weekNumbe = calendar.get(Calendar.WEEK_OF_MONTH);
-////		本周的第几天
-//	    int week_index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-////	    用来作为查询场地结果列表的参数
-//	    Time time1 = new Time();
-//
-////	    判断特殊情况：部分场地在部分时间段每周都开放，这时syuuusuu设置为6
-//	    if (week_index == 3 && time.getJikantai() == 2) {
-//		    court.setZhouji(week_index);
-//		    court.setZhoushu(6);
-//		    court.setShijianduan(time.getJikantai());
-//	    }
-//	    else if (week_index == 5 && time.getJikantai() == 2){
-//		    court.setZhouji(week_index);
-//		    court.setZhoushu(6);
-//		    court.setShijianduan(time.getJikantai());
-//	    }
-//	    else if (week_index == 3 && time.getJikantai() == 2) {
-//		    court.setZhouji(week_index);
-//		    court.setZhoushu(6);
-//		    court.setShijianduan(time.getJikantai());
-//	    }
-//	    else if (week_index == 4 && time.getJikantai() == 2) {
-//		    court.setZhouji(week_index);
-//		    court.setZhoushu(6);
-//		    court.setShijianduan(time.getJikantai());
-//	    }
-//
-////	    其他情况：将计算出的数据放入Time对象中
-//	    else {
-//	    	court.setZhouji(week_index);
-//	    	court.setZhoushu(weekNumbe);
-//	    	court.setShijianduan(time.getJikantai());
-//	    }
-//		/*
-//		 * System.out.println(time1.getYoubi1());
-//		 * System.out.println(weekNumbe);
-//		 * System.out.println(time.getJikantai());
-//		 */
-//
-////	    调用mapper中的方法，查询场地
-//	    List<Court> court_list1 = basketball_court_search.Search_court(time1);
-//
-////	    遍历结果列表，根据场地编号在另一张表中查询场地名称，并添加到每个court元素的court_name属性中
-//	    for(int i=0; i<court_list1.size();i++) {
-//	    	Court court1 = court_list1.get(i);
-//	    	String name = basketball_court_search.Search_court_name(court1);
-//	    	court1.setCourt_name(name);
-//	    }
-//
-////	    返回结果
-//	    return court_list1;
-//	}
+	public ArrayList<String> search_Court(){
+		ArrayList<String> courtNameArr = courtsearch.Search_court_names();
+		System.out.println(courtNameArr);
+		return courtNameArr;
+	}
+
+
+
+	public boolean search_User(User userfind) {
+		User user = usersearch.Search_user(userfind);
+		if (user != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

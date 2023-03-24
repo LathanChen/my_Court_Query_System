@@ -10,7 +10,7 @@ public class Court {
 //	一周的第几天
 	private int zhouji;
 //	场地名称
-	private String name;
+	private String court_name;
 //	一个月的第几周
 	private int zhoushu;
 //	距离

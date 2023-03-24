@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.entity.Court;
 import com.example.demo.entity.Form;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserForm;
 import com.example.demo.service.Search;
 
 @Controller
@@ -24,12 +26,22 @@ public class QueryController {
 	@Autowired
 	Search search;
 
-	@GetMapping("/api/login")
-	@ResponseBody
-	public User test1() {
-	    User user = new User();
-	    user.setId(1);
-	    return user;
+//	@GetMapping("/api/login")
+//	@ResponseBody
+//	public User test1() {
+//	    User user = new User();
+//	    user.setId(1);
+//	    return user;
+//	}
+
+@GetMapping("/api/inputdata")
+@ResponseBody
+//	Map定义为返回值，需要在<>输入两个参数，分别为键、值
+	public Map<String, List<String>> findInputData() {
+		ArrayList<String> courtList = search.search_Court();
+		Map<String, List<String>> inputDatas = new HashMap<>();
+		inputDatas.put("courtnames", courtList);
+		return inputDatas;
 	}
 
  @PostMapping("/api/form-data")
@@ -48,4 +60,12 @@ public class QueryController {
         System.out.println(Courtmap);
         return Courtmap;
     }
+
+ @PostMapping("/api/adminlogin")
+ @ResponseBody
+ 	public boolean adminLogin(@RequestBody User formdata) {
+	 boolean findUser = search.search_User(formdata);
+	 System.out.println(findUser);
+	 return findUser;
+ }
 }
