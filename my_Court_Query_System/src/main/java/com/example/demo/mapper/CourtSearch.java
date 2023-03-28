@@ -10,12 +10,13 @@ import com.example.demo.entity.Court;
 
 @Mapper
 public interface CourtSearch {
-	@Select("SELECT * FROM basketballcourt WHERE zhouji=#{zhouji} AND zhoushu=#{zhoushu} AND shijianduan=#{shijianduan}")
+	@Select("SELECT * FROM courtopeninfo WHERE zhouji=#{zhouji} AND zhoushu=#{zhoushu} AND shijianduan=#{shijianduan}")
 	List<Court> Search_court(Court court);
 
-	@Select("SELECT DISTINCT court_name FROM courtinfo;")
-	ArrayList<String> Search_court_names();
+//	查询所有的场地及编号
+	@Select("SELECT DISTINCT court_name, cdbianhao FROM courtinfo")
+	ArrayList<Court> Search_courts();
 
-	@Select("SELECT * FROM courtinfo WHERE bianhao=#{bianhao}")
+	@Select("SELECT * FROM courtinfo WHERE cdbianhao=#{cdbianhao}")
 	Court Search_court_name(Court court);
 }

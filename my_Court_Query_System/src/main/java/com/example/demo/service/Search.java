@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Court;
+import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.Form;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
+import com.example.demo.entity.Xiangmu;
 import com.example.demo.mapper.CourtSearch;
 import com.example.demo.mapper.UserSearch;
+import com.example.demo.mapper.XmSearch;
+import com.example.demo.mapper.insertInfo;
 
 @Service
 public class Search {
@@ -22,6 +27,10 @@ public class Search {
     private CourtSearch courtsearch;
 	@Autowired
 	private UserSearch usersearch;
+	@Autowired
+	private XmSearch xmsearch;
+	@Autowired
+	private insertInfo insertinfo;
 
 //	根据前端页面用户选择的日期，判断当天是本周的第几天
 	public List<Court> search_Court(Form form) {
@@ -83,13 +92,16 @@ public class Search {
 		return courtlist;
 	}
 
-	public ArrayList<String> search_Court(){
-		ArrayList<String> courtNameArr = courtsearch.Search_court_names();
-		System.out.println(courtNameArr);
-		return courtNameArr;
+	public ArrayList<Court> search_Court(){
+		ArrayList<Court> courtNameAndNumarr = courtsearch.Search_courts();
+		System.out.println(courtNameAndNumarr);
+		return courtNameAndNumarr;
 	}
 
-
+	public ArrayList<Xiangmu> search_XmNames(){
+		ArrayList<Xiangmu> xmNameArr = xmsearch.Search_xmNames();
+		return xmNameArr;
+	}
 
 	public boolean search_User(User userfind) {
 		User user = usersearch.Search_user(userfind);
@@ -99,5 +111,13 @@ public class Search {
 		else {
 			return false;
 		}
+	}
+
+	public boolean insertCourtInfo(CourtOpenInfo court){
+		Timestamp dltime = new Timestamp(System.currentTimeMillis());
+		court.setDltime(dltime);
+		String shijian = court.getKs_shijian()+"-"+court.getJs_shijian();
+		court.setShijian(shijian);
+		return insertinfo.insertInfo(court);
 	}
 }

@@ -6,7 +6,9 @@ import lombok.Data;
 public class Court {
 
 //	场地编号
-	private int bianhao;
+	private int cdbianhao;
+//	项目编号
+	private String xmbianhao;
 //	一周的第几天
 	private int zhouji;
 //	场地名称

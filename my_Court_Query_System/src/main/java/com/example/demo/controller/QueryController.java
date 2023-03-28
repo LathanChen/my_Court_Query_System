@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.entity.Court;
+import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.Form;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
+import com.example.demo.entity.Xiangmu;
 import com.example.demo.service.Search;
 
 @Controller
@@ -37,13 +39,17 @@ public class QueryController {
 @GetMapping("/api/inputdata")
 @ResponseBody
 //	Map定义为返回值，需要在<>输入两个参数，分别为键、值
-	public Map<String, List<String>> findInputData() {
-		ArrayList<String> courtList = search.search_Court();
-		Map<String, List<String>> inputDatas = new HashMap<>();
-		inputDatas.put("courtnames", courtList);
+	public Map<String, List<?>> findInputData() {
+		ArrayList<Court> courtList1 = search.search_Court();
+		ArrayList<Xiangmu> courtList2 = search.search_XmNames();
+		Map<String, List<?>> inputDatas = new HashMap<>();
+		inputDatas.put("courts", courtList1);
+		inputDatas.put("xiangmunames", courtList2);
+		System.out.println(courtList2);
 		return inputDatas;
 	}
 
+//当首页信息选择完毕点击查询时
  @PostMapping("/api/form-data")
  @ResponseBody
     public Map<String, Object> handleFormData(@RequestBody Form formData) {
@@ -61,11 +67,22 @@ public class QueryController {
         return Courtmap;
     }
 
+// 当管理员登录时
  @PostMapping("/api/adminlogin")
  @ResponseBody
  	public boolean adminLogin(@RequestBody User formdata) {
 	 boolean findUser = search.search_User(formdata);
 	 System.out.println(findUser);
 	 return findUser;
+ }
+
+// 当管理员新增项目信息时
+ @PostMapping("/api/insertinfo")
+ @ResponseBody
+ public boolean insertInfo(@RequestBody CourtOpenInfo courtopeninfo) {
+	 boolean insertFLG = search.insertCourtInfo(courtopeninfo);
+	 System.out.println(courtopeninfo);
+	 System.out.println(insertFLG);
+	 return insertFLG;
  }
 }
