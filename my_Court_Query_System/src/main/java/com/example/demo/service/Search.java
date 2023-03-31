@@ -87,15 +87,26 @@ public class Search {
 	    	court1.setCourt_name(court_search.getCourt_name());
 	    	court1.setDizhi(court_search.getDizhi());
 	    	court1.setJuli(court_search.getJuli());
-	    	System.out.println(courtlist);
+//	    	System.out.println(courtlist);
 	    }
 		return courtlist;
 	}
 
 	public ArrayList<Court> search_Court(){
 		ArrayList<Court> courtNameAndNumarr = courtsearch.Search_courts();
-		System.out.println(courtNameAndNumarr);
+//		System.out.println(courtNameAndNumarr);
 		return courtNameAndNumarr;
+	}
+
+	public ArrayList<CourtOpenInfo> Admin_Search_court(CourtOpenInfo courtopeninfo){
+		ArrayList<CourtOpenInfo> adminSearchList = courtsearch.Admin_Search_court(courtopeninfo);
+		for(CourtOpenInfo info : adminSearchList) {
+			String[] shijian = info.getShijian().split("-");
+			info.setKs_shijian(shijian[0]);
+			info.setJs_shijian(shijian[1]);
+		}
+		System.out.println(adminSearchList);
+		return adminSearchList;
 	}
 
 	public ArrayList<Xiangmu> search_XmNames(){

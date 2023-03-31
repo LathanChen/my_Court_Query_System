@@ -85,4 +85,12 @@ public class QueryController {
 	 System.out.println(insertFLG);
 	 return insertFLG;
  }
+
+// 当管理员搜索项目信息时
+ @PostMapping("/api/editanddeleteinfo")
+ @ResponseBody
+ public ArrayList<CourtOpenInfo> adminSearchInfo(@RequestBody CourtOpenInfo courtopeninfo) {
+	 ArrayList<CourtOpenInfo> courtlist = search.Admin_Search_court(courtopeninfo);
+	 return courtlist;
+ }
 }
