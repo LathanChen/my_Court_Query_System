@@ -8,7 +8,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,7 +65,7 @@ public class QueryController {
         Map<String, Object> Courtmap = new HashMap<>();
         Courtmap.put("courtList", courtList);
         Courtmap.put("courtNums", courtNums);
-        System.out.println(Courtmap);
+//        System.out.println(Courtmap);
         return Courtmap;
     }
 
@@ -86,11 +88,28 @@ public class QueryController {
 	 return insertFLG;
  }
 
+// 当管理员更新项目时
+ @PostMapping("/api/editinfo")
+ @ResponseBody
+ public boolean updateInfo(@RequestBody CourtOpenInfo courtopeninfo) {
+	 boolean updateFLG = search.updateCourtInfo(courtopeninfo);
+	 System.out.println(courtopeninfo);
+	 System.out.println(updateFLG);
+	 return updateFLG;
+ }
+
 // 当管理员搜索项目信息时
  @PostMapping("/api/editanddeleteinfo")
  @ResponseBody
  public ArrayList<CourtOpenInfo> adminSearchInfo(@RequestBody CourtOpenInfo courtopeninfo) {
 	 ArrayList<CourtOpenInfo> courtlist = search.Admin_Search_court(courtopeninfo);
 	 return courtlist;
+ }
+//当管理员删除项目信息时
+ @DeleteMapping("/api/deleteinfo/{bianhao}")
+ @ResponseBody
+// @PathVariable注解用于将URL中的{bianhao}参数与方法参数绑定。
+ public boolean adminSearchInfo(@PathVariable int bianhao) {
+	 return search.deleteCourtInfo(bianhao);
  }
 }

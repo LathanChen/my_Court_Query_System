@@ -17,6 +17,8 @@ import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
 import com.example.demo.entity.Xiangmu;
 import com.example.demo.mapper.CourtSearch;
+import com.example.demo.mapper.DeleteInfo;
+import com.example.demo.mapper.UpdateInfo;
 import com.example.demo.mapper.UserSearch;
 import com.example.demo.mapper.XmSearch;
 import com.example.demo.mapper.insertInfo;
@@ -31,6 +33,10 @@ public class Search {
 	private XmSearch xmsearch;
 	@Autowired
 	private insertInfo insertinfo;
+	@Autowired
+	private UpdateInfo updateinfo;
+	@Autowired
+	private DeleteInfo deleteinfo;
 
 //	根据前端页面用户选择的日期，判断当天是本周的第几天
 	public List<Court> search_Court(Form form) {
@@ -77,7 +83,7 @@ public class Search {
 	    	court.setZhoushu(weekNumbe);
 	    	court.setShijianduan(form.getShijianduan());
 	    }
-//		System.out.println(court);
+		System.out.println(court);
 		List<Court> courtlist = courtsearch.Search_court(court);
 //		System.out.println(courtlist);
 		for(int i=0; i<courtlist.size();i++) {
@@ -130,5 +136,15 @@ public class Search {
 		String shijian = court.getKs_shijian()+"-"+court.getJs_shijian();
 		court.setShijian(shijian);
 		return insertinfo.insertInfo(court);
+	}
+
+	public boolean updateCourtInfo(CourtOpenInfo court){
+//		System.out.println(court);
+		court.setShijian(court.getKs_shijian()+"-"+court.getJs_shijian());
+		return updateinfo.UpdateInfo(court);
+	}
+
+	public boolean deleteCourtInfo(int bianhao){
+		return deleteinfo.DeleteInfo(bianhao);
 	}
 }
