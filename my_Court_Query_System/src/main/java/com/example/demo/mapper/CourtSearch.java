@@ -11,7 +11,7 @@ import com.example.demo.entity.CourtOpenInfo;
 
 @Mapper
 public interface CourtSearch {
-	@Select("SELECT * FROM courtopeninfo WHERE zhouji=#{zhouji} AND zhoushu=#{zhoushu} AND shijianduan=#{shijianduan}")
+	@Select("SELECT * FROM courtopeninfo WHERE zhouji=#{zhouji} AND zhoushu=#{zhoushu} AND shijianduan=#{shijianduan} AND xmbianhao=#{xmbianhao}")
 	List<Court> Search_court(Court court);
 
 	@Select("SELECT * FROM courtopeninfo WHERE xmbianhao=#{xmbianhao} AND cdbianhao=#{cdbianhao}")

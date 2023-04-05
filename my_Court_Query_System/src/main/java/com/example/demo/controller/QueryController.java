@@ -59,7 +59,7 @@ public class QueryController {
         Form form = new Form();
         form.setDate(formData.getDate());
         form.setShijianduan(formData.getShijianduan());
-        form.setXiangmu(formData.getXiangmu());
+        form.setXmbianhao(formData.getXmbianhao());
         List<Court> courtList = search.search_Court(formData);
         int courtNums = courtList.size();
         Map<String, Object> Courtmap = new HashMap<>();

@@ -54,48 +54,72 @@ public class Search {
 		if(week_index == 0){
 			weekNumbe = weekNumbe-1;
 		}
+//		----------------4.5修改开始----------------
 
-		Court court = new Court();
-		if (week_index == 3 && form.getShijianduan() == 2) {
-		    court.setZhouji(week_index);
-		    court.setZhoushu(6);
-		    court.setShijianduan(form.getShijianduan());
-	    }
-	    else if (week_index == 5 && form.getShijianduan() == 2){
-		    court.setZhouji(week_index);
-		    court.setZhoushu(6);
-		    court.setShijianduan(form.getShijianduan());
-	    }
-	    else if (week_index == 3 && form.getShijianduan() == 2) {
-		    court.setZhouji(week_index);
-		    court.setZhoushu(6);
-		    court.setShijianduan(form.getShijianduan());
-	    }
-	    else if (week_index == 4 && form.getShijianduan() == 2) {
-		    court.setZhouji(week_index);
-		    court.setZhoushu(6);
-		    court.setShijianduan(form.getShijianduan());
-	    }
+//		1、取得周几、第几周和时间段后，先搜索一次
+		Court court1 = new Court();
+		court1.setZhouji(week_index);
+	    court1.setZhoushu(weekNumbe);
+	    court1.setShijianduan(form.getShijianduan());
+	    court1.setXmbianhao(form.getXmbianhao());
+	    List<Court> courtlist1 = courtsearch.Search_court(court1);
 
-//	    其他情况：将计算出的数据放入Time对象中
-	    else {
-	    	court.setZhouji(week_index);
-	    	court.setZhoushu(weekNumbe);
-	    	court.setShijianduan(form.getShijianduan());
-	    }
-		System.out.println(court);
-		List<Court> courtlist = courtsearch.Search_court(court);
-//		System.out.println(courtlist);
-		for(int i=0; i<courtlist.size();i++) {
-	    	Court court1 = courtlist.get(i);
-	    	Court court_search = courtsearch.Search_court_name(court1);
+//		2、用周几、时间段及周数=每周为key再搜索一次
+	    Court court2 = new Court();
+		court2.setZhouji(week_index);
+	    court2.setZhoushu(6);
+	    court2.setShijianduan(form.getShijianduan());
+	    court2.setXmbianhao(form.getXmbianhao());
+	    List<Court> courtlist2 = courtsearch.Search_court(court2);
+
+//		3、将两次搜索得到的数据合并
+	    courtlist1.addAll(courtlist2);
+//	    System.out.println(courtlist1);
+
+//	    4、取得每个场地的名称、距离、地址等信息
+		for(int i=0; i<courtlist1.size();i++) {
+	    	Court court3 = courtlist1.get(i);
+	    	Court court_search = courtsearch.Search_court_name(court3);
 //	    	System.out.println(court_search);
-	    	court1.setCourt_name(court_search.getCourt_name());
-	    	court1.setDizhi(court_search.getDizhi());
-	    	court1.setJuli(court_search.getJuli());
-//	    	System.out.println(courtlist);
+	    	court3.setCourt_name(court_search.getCourt_name());
+	    	court3.setDizhi(court_search.getDizhi());
+	    	court3.setJuli(court_search.getJuli());
+//	    	System.out.println(courtlist1);
+//	    ----------------4.5修改结束----------------
+//		Court court = new Court();
+//		if (week_index == 3 && form.getShijianduan() == 2) {
+//		    court.setZhouji(week_index);
+//		    court.setZhoushu(6);
+//		    court.setShijianduan(form.getShijianduan());
+//	    }
+//	    else if (week_index == 5 && form.getShijianduan() == 2){
+//		    court.setZhouji(week_index);
+//		    court.setZhoushu(6);
+//		    court.setShijianduan(form.getShijianduan());
+//	    }
+//	    else if (week_index == 3 && form.getShijianduan() == 2) {
+//		    court.setZhouji(week_index);
+//		    court.setZhoushu(6);
+//		    court.setShijianduan(form.getShijianduan());
+//	    }
+//	    else if (week_index == 4 && form.getShijianduan() == 2) {
+//		    court.setZhouji(week_index);
+//		    court.setZhoushu(6);
+//		    court.setShijianduan(form.getShijianduan());
+//	    }
+//
+////	    其他情况：将计算出的数据放入Time对象中
+//	    else {
+//	    	court.setZhouji(week_index);
+//	    	court.setZhoushu(weekNumbe);
+//	    	court.setShijianduan(form.getShijianduan());
+//	    }
+//		System.out.println(court);
+//		List<Court> courtlist = courtsearch.Search_court(court);
+////		System.out.println(courtlist);
+
 	    }
-		return courtlist;
+		return courtlist1;
 	}
 
 	public ArrayList<Court> search_Court(){

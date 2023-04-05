@@ -12,6 +12,6 @@ public class Form {
 	private Date date;
 //	前端输入的时间段
 	private int shijianduan;
-//	前端输入的运动项目
-	private String xiangmu;
+//	前端输入的运动项目编号
+	private int xmbianhao;
 }
