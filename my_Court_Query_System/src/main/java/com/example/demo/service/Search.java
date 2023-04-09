@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Court;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.CourtsResult;
 import com.example.demo.entity.Form;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
@@ -22,6 +23,8 @@ import com.example.demo.mapper.UpdateInfo;
 import com.example.demo.mapper.UserSearch;
 import com.example.demo.mapper.XmSearch;
 import com.example.demo.mapper.insertInfo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class Search {
@@ -120,6 +123,63 @@ public class Search {
 
 	    }
 		return courtlist1;
+	}
+
+	public List<Court> search_Court_with_page(Form form) {
+//		String[] weeks = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六"};
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(form.getDate());
+//		本周的第几天
+		int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
+//		如果是周日，则赋值为0
+		if(week_index<0){
+			week_index = 0;
+		}
+//		本月的第几周
+		int weekNumbe = cal.get(Calendar.WEEK_OF_MONTH);
+		if(week_index == 0){
+			weekNumbe = weekNumbe-1;
+		}
+//		----------------4.5修改开始----------------
+
+//		1、取得周几、第几周和时间段后，先搜索一次
+		Court court1 = new Court();
+		court1.setZhouji(week_index);
+	    court1.setZhoushu(weekNumbe);
+	    court1.setShijianduan(form.getShijianduan());
+	    court1.setXmbianhao(form.getXmbianhao());
+//	    新的SQL查询，可以查询满足前面算出的周数及每周这两个任意条件的记录
+	    List<Court> courtlist1 = courtsearch.Search_court_with_page(court1,form);
+
+//	    2、取得每个场地的名称、距离、地址等信息
+		for(int i=0; i<courtlist1.size();i++) {
+	    	Court court3 = courtlist1.get(i);
+	    	Court court_search = courtsearch.Search_court_name(court3);
+//	    	System.out.println(court_search);
+	    	court3.setCourt_name(court_search.getCourt_name());
+	    	court3.setDizhi(court_search.getDizhi());
+	    	court3.setJuli(court_search.getJuli());
+	    }
+		return courtlist1;
+	}
+
+	public CourtsResult<Court> search_Court_Forpages(Form form) {
+//		System.out.println(form.getPageNum());
+//		System.out.println(form.getPageSize());
+		int PageNum = form.getPageNum();
+		int PageSize = form.getPageSize();
+		PageHelper.startPage(PageNum, PageSize);     // 使用PageHelper进行分页查询获得场地查询结果
+		List<Court> courtList = search_Court(form);
+	    PageInfo<Court> pageInfo = new PageInfo<>(courtList);
+
+	    CourtsResult<Court> courtsResult = new CourtsResult<>();
+	    courtsResult.setList(pageInfo.getList());
+	    courtsResult.setTotal(pageInfo.getTotal());
+	    courtsResult.setPageNum(pageInfo.getPageNum());
+	    courtsResult.setPageSize(pageInfo.getPageSize());
+	    courtsResult.setPages(pageInfo.getPages());
+	    courtsResult.setCount(pageInfo.getList().size());
+        return courtsResult;
 	}
 
 	public ArrayList<Court> search_Court(){

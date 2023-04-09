@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.entity.Court;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.CourtsResult;
 import com.example.demo.entity.Form;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
 import com.example.demo.entity.Xiangmu;
 import com.example.demo.service.Search;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
@@ -69,12 +73,20 @@ public class QueryController {
         return Courtmap;
     }
 
+ @PostMapping("/api/courts")
+ @ResponseBody
+ public CourtsResult<Court> getCourts(@RequestBody Form form) {
+	 CourtsResult<Court> courtsResult = search.search_Court_Forpages(form);
+	 System.out.println(courtsResult);
+	 return courtsResult;
+ }
+
 // 当管理员登录时
  @PostMapping("/api/adminlogin")
  @ResponseBody
  	public boolean adminLogin(@RequestBody User formdata) {
 	 boolean findUser = search.search_User(formdata);
-	 System.out.println(findUser);
+//	 System.out.println(findUser);
 	 return findUser;
  }
 
@@ -83,8 +95,8 @@ public class QueryController {
  @ResponseBody
  public boolean insertInfo(@RequestBody CourtOpenInfo courtopeninfo) {
 	 boolean insertFLG = search.insertCourtInfo(courtopeninfo);
-	 System.out.println(courtopeninfo);
-	 System.out.println(insertFLG);
+//	 System.out.println(courtopeninfo);
+//	 System.out.println(insertFLG);
 	 return insertFLG;
  }
 
@@ -93,8 +105,8 @@ public class QueryController {
  @ResponseBody
  public boolean updateInfo(@RequestBody CourtOpenInfo courtopeninfo) {
 	 boolean updateFLG = search.updateCourtInfo(courtopeninfo);
-	 System.out.println(courtopeninfo);
-	 System.out.println(updateFLG);
+//	 System.out.println(courtopeninfo);
+//	 System.out.println(updateFLG);
 	 return updateFLG;
  }
 

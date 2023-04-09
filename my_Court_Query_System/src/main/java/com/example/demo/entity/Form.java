@@ -14,4 +14,9 @@ public class Form {
 	private int shijianduan;
 //	前端输入的运动项目编号
 	private int xmbianhao;
+//	分页功能-当前页码数
+	private int pageNum;
+//	分页功能-每页记录数
+	private int pageSize;
+
 }

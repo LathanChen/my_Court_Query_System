@@ -23,4 +23,7 @@ public class Court {
 	private String shijian;
 //	场馆的地址
 	private String dizhi;
+//	表格中的编号
+	private String bianhao;
+
 }

@@ -8,11 +8,15 @@ import org.apache.ibatis.annotations.Select;
 
 import com.example.demo.entity.Court;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.Form;
 
 @Mapper
 public interface CourtSearch {
 	@Select("SELECT * FROM courtopeninfo WHERE zhouji=#{zhouji} AND zhoushu=#{zhoushu} AND shijianduan=#{shijianduan} AND xmbianhao=#{xmbianhao}")
 	List<Court> Search_court(Court court);
+
+	@Select("SELECT * FROM courtopeninfo WHERE zhouji=#{court.zhouji} AND zhoushu IN (#{court.zhoushu},6) AND shijianduan=#{court.shijianduan} AND xmbianhao=#{court.xmbianhao} LIMIT #{form.pageNum},#{form.pageSize}")
+	List<Court> Search_court_with_page(Court court,Form form);
 
 	@Select("SELECT * FROM courtopeninfo WHERE xmbianhao=#{xmbianhao} AND cdbianhao=#{cdbianhao}")
 	ArrayList<CourtOpenInfo> Admin_Search_court(CourtOpenInfo courtopeninfo);
