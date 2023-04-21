@@ -7,7 +7,7 @@ import com.example.demo.entity.User;
 
 @Mapper
 public interface UserSearch {
-	@Select("SELECT * FROM userlist WHERE id=#{id} AND password=#{password}")
+	@Select("SELECT * FROM userlist WHERE username=#{username} AND password=#{password}")
 	User Search_user(User user);
 
 	@Select("SELECT * FROM userlist WHERE username=#{username}")

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Court;
 import com.example.demo.entity.CourtOpenInfo;
@@ -27,6 +28,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 @Service
+//在Spring Boot中，事务是指对数据访问操作进行管理的机制，它确保对数据的修改操作要么全部成功要么全部失败，从而保证数据的一致性和完整性。
+//Spring Boot中的事务可以通过注解@Transactional来声明和控制。
+@Transactional
 public class Search {
 	@Autowired
     private CourtSearch courtsearch;
@@ -204,15 +208,14 @@ public class Search {
 		return xmNameArr;
 	}
 
-	public boolean search_User(User userfind) {
+	public User search_User(User userfind) {
 		User user = usersearch.Search_user(userfind);
-		if (user != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+		if(user!=null){
+            return user;
+        }
+        throw  new RuntimeException("登录失败~~");
+    }
+
 
 	public boolean insertCourtInfo(CourtOpenInfo court){
 		Timestamp dltime = new Timestamp(System.currentTimeMillis());

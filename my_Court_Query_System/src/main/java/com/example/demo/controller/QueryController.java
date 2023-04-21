@@ -24,11 +24,12 @@ import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
 import com.example.demo.entity.Xiangmu;
 import com.example.demo.service.Search;
+import com.example.demo.util.JWTUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 
 public class QueryController {
 	@Autowired
@@ -84,10 +85,28 @@ public class QueryController {
 // 当管理员登录时
  @PostMapping("/api/adminlogin")
  @ResponseBody
- 	public boolean adminLogin(@RequestBody User formdata) {
-	 boolean findUser = search.search_User(formdata);
-//	 System.out.println(findUser);
-	 return findUser;
+ 	public Map<String,Object> adminLogin(@RequestBody User formdata) {
+	 Map<String,Object> result = new HashMap<>();
+	 try {
+		 User userInfo = search.search_User(formdata);
+		 Map<String, String> map = new HashMap<>();//用来存放payload
+         map.put("id",userInfo.getId());
+         map.put("username", userInfo.getUsername());
+//         生成Token
+         String token = JWTUtils.getToken(map);
+//         记录状态为成功
+         result.put("state",true);
+//         登录成功的通知消息
+         result.put("msg","登录成功!!!");
+//         放入Token
+         result.put("token",token); //成功返回token信息
+	 }
+	 catch (Exception e) {
+         e.printStackTrace();
+         result.put("state","false");
+         result.put("msg",e.getMessage());
+     }
+	 return result;
  }
 
 // 当管理员新增项目信息时
