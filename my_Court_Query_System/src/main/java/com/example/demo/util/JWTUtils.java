@@ -10,7 +10,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JWTUtils {
 //	代表了用于签名的密钥
-    private static String TOKEN = "token!Q@W3e4r";
+    private static String TOKEN = "shutiao";
 
     /**
      * 生成token
@@ -26,7 +26,7 @@ public class JWTUtils {
         });
         Calendar instance = Calendar.getInstance();
 //        设置7秒过期
-        instance.add(Calendar.SECOND,7);
+        instance.add(Calendar.SECOND,180);
         builder.withExpiresAt(instance.getTime());
 //        使用HMAC-SHA256算法对JWT进行签名
         return builder.sign(Algorithm.HMAC256(TOKEN)).toString();

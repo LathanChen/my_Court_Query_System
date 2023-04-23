@@ -40,4 +40,8 @@ public class CourtOpenInfo {
 //	使用java.sql.Date只能精确到天
 //	java.sql.Timestamp可以精确到毫秒
 	private Timestamp dltime;
+//	分页功能-当前页码数
+	private int pageNum;
+//	分页功能-每页记录数
+	private int pageSize;
 }

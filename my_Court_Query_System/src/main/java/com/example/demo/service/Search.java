@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Court;
 import com.example.demo.entity.CourtOpenInfo;
-import com.example.demo.entity.CourtsResult;
 import com.example.demo.entity.Form;
+import com.example.demo.entity.Result;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserForm;
 import com.example.demo.entity.Xiangmu;
@@ -167,7 +167,7 @@ public class Search {
 		return courtlist1;
 	}
 
-	public CourtsResult<Court> search_Court_Forpages(Form form) {
+	public Result<Court> search_Court_Forpages(Form form) {
 //		System.out.println(form.getPageNum());
 //		System.out.println(form.getPageSize());
 		int PageNum = form.getPageNum();
@@ -176,7 +176,7 @@ public class Search {
 		List<Court> courtList = search_Court(form);
 	    PageInfo<Court> pageInfo = new PageInfo<>(courtList);
 
-	    CourtsResult<Court> courtsResult = new CourtsResult<>();
+	    Result<Court> courtsResult = new Result<>();
 	    courtsResult.setList(pageInfo.getList());
 	    courtsResult.setTotal(pageInfo.getTotal());
 	    courtsResult.setPageNum(pageInfo.getPageNum());
@@ -186,19 +186,43 @@ public class Search {
         return courtsResult;
 	}
 
+	public Result<CourtOpenInfo> admin_Search_Court_Forpages(CourtOpenInfo courtopeninfo){
+		int PageNum = courtopeninfo.getPageNum();
+		int PageSize = courtopeninfo.getPageSize();
+		PageHelper.startPage(PageNum, PageSize);     // 使用PageHelper进行分页查询获得场地查询结果
+		List<CourtOpenInfo> courtList = Admin_Search_court(courtopeninfo);
+	    PageInfo<CourtOpenInfo> pageInfo = new PageInfo<>(courtList);
+
+	    Result<CourtOpenInfo> CourtOpenInfoResult = new Result<>();
+	    CourtOpenInfoResult.setList(pageInfo.getList());
+	    System.out.println(pageInfo.getList());
+	    System.out.println("-------------------");
+	    CourtOpenInfoResult.setTotal(pageInfo.getTotal());
+	    CourtOpenInfoResult.setPageNum(pageInfo.getPageNum());
+	    CourtOpenInfoResult.setPageSize(pageInfo.getPageSize());
+	    CourtOpenInfoResult.setPages(pageInfo.getPages());
+	    CourtOpenInfoResult.setCount(pageInfo.getList().size());
+        return CourtOpenInfoResult;
+	}
+
 	public ArrayList<Court> search_Court(){
 		ArrayList<Court> courtNameAndNumarr = courtsearch.Search_courts();
 //		System.out.println(courtNameAndNumarr);
 		return courtNameAndNumarr;
 	}
 
-	public ArrayList<CourtOpenInfo> Admin_Search_court(CourtOpenInfo courtopeninfo){
-		ArrayList<CourtOpenInfo> adminSearchList = courtsearch.Admin_Search_court(courtopeninfo);
+	public List<CourtOpenInfo> Admin_Search_court(CourtOpenInfo courtopeninfo){
+		System.out.println("111111111111111111");
+		System.out.println(courtopeninfo);
+		List<CourtOpenInfo> adminSearchList = courtsearch.Admin_Search_court(courtopeninfo);
+		System.out.println("查询结果1");
+		System.out.println(adminSearchList);
 		for(CourtOpenInfo info : adminSearchList) {
 			String[] shijian = info.getShijian().split("-");
 			info.setKs_shijian(shijian[0]);
 			info.setJs_shijian(shijian[1]);
 		}
+		System.out.println("查询结果2");
 		System.out.println(adminSearchList);
 		return adminSearchList;
 	}

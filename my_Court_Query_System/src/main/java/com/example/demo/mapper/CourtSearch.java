@@ -19,7 +19,7 @@ public interface CourtSearch {
 	List<Court> Search_court_with_page(Court court,Form form);
 
 	@Select("SELECT * FROM courtopeninfo WHERE xmbianhao=#{xmbianhao} AND cdbianhao=#{cdbianhao}")
-	ArrayList<CourtOpenInfo> Admin_Search_court(CourtOpenInfo courtopeninfo);
+	List<CourtOpenInfo> Admin_Search_court(CourtOpenInfo courtopeninfo);
 
 //	查询所有的场地及编号
 	@Select("SELECT DISTINCT court_name, cdbianhao FROM courtinfo")
